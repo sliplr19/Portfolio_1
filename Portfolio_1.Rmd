@@ -18,6 +18,6 @@ Cooking_Blogs_raw <- read_excel("G:/My Drive/DataScience/Covid/Cooking.xlsx", sh
 This data is messy. Let's make it tidy! (well, kind of. The some of the rows will be means rather than observations....so maybe it won't be totally tidy). I'm not going to even try to work within these dataframes because they're just that messy. Let's start by making a new dataframe! 
 
 ```{r create_dataframe}
-
-
+cooking_columns <- c("Timepoint", "Recipes", "Baking_Bread", "Sourdough", "Cooking_directions", "Cook")
+cooking_data <- as.data.frame(matrix(ncol = length(cooking_columns), nrow=0, dimnames = list(NULL,cooking_columns)) )
 ```
