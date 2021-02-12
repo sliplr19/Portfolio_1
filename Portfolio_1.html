@@ -369,9 +369,9 @@ summary {
 </div>
 
 
-<p>In this portfolio piece, we will look at how people’s relationship to cooking and baking has changed pre- and during Covid. Let’s load some data!</p>
+<p>In this portfolio piece, we will look at how people’s relationship to cooking and baking has changed pre- and during Covid. There are four spreadsheets in this file. The first is interest in the activity as determined by google trends. The final three are number of mentions of the activities on Twitter, Forums, and Blogs. Let’s load some data!</p>
 <pre class="r"><code>library(readxl)
-Cooking &lt;- read_excel(&quot;G:/My Drive/DataScience/Covid/Cooking.xlsx&quot;)</code></pre>
+Cooking_Interest_raw &lt;- read_excel(&quot;G:/My Drive/DataScience/Covid/Cooking.xlsx&quot;, sheet = 1)</code></pre>
 <pre><code>## New names:
 ## * `` -&gt; ...1
 ## * `Interest before March 13 (January 3, 2020-March 12, 2020)` -&gt; `Interest before March 13 (January 3, 2020-March 12, 2020)...2`
@@ -379,7 +379,31 @@ Cooking &lt;- read_excel(&quot;G:/My Drive/DataScience/Covid/Cooking.xlsx&quot;)
 ## * `Interest after March 13 (March 14, 2020-May 22, 2020)` -&gt; `Interest after March 13 (March 14, 2020-May 22, 2020)...4`
 ## * `` -&gt; ...5
 ## * ... and 18 more problems</code></pre>
-<p>This data is messy. Let’s make it tidy! (well, kind of. The rows will be means rather than observations….so maybe it won’t be totally tidy)</p>
+<pre class="r"><code>Cooking_Twitter_raw &lt;- read_excel(&quot;G:/My Drive/DataScience/Covid/Cooking.xlsx&quot;, sheet = 2)</code></pre>
+<pre><code>## New names:
+## * `` -&gt; ...1
+## * `Mentions before March 13 (January 3, 2020-March 12, 2020)` -&gt; `Mentions before March 13 (January 3, 2020-March 12, 2020)...2`
+## * `` -&gt; ...3
+## * `Mentions after March 13 (March 14, 2020-May 22, 2020)` -&gt; `Mentions after March 13 (March 14, 2020-May 22, 2020)...4`
+## * `` -&gt; ...5
+## * ... and 18 more problems</code></pre>
+<pre class="r"><code>Cooking_Forums_raw &lt;- read_excel(&quot;G:/My Drive/DataScience/Covid/Cooking.xlsx&quot;, sheet = 3)</code></pre>
+<pre><code>## New names:
+## * `` -&gt; ...1
+## * `Mentions before March 13 (January 3, 2020-March 12, 2020)` -&gt; `Mentions before March 13 (January 3, 2020-March 12, 2020)...2`
+## * `` -&gt; ...3
+## * `Mentions after March 13 (March 14, 2020-May 22, 2020)` -&gt; `Mentions after March 13 (March 14, 2020-May 22, 2020)...4`
+## * `` -&gt; ...5
+## * ... and 29 more problems</code></pre>
+<pre class="r"><code>Cooking_Blogs_raw &lt;- read_excel(&quot;G:/My Drive/DataScience/Covid/Cooking.xlsx&quot;, sheet = 4)</code></pre>
+<pre><code>## New names:
+## * `` -&gt; ...1
+## * `Mentions before March 13 (January 3, 2020-March 12, 2020)` -&gt; `Mentions before March 13 (January 3, 2020-March 12, 2020)...2`
+## * `` -&gt; ...3
+## * `Mentions after March 13 (March 14, 2020-May 22, 2020)` -&gt; `Mentions after March 13 (March 14, 2020-May 22, 2020)...4`
+## * `` -&gt; ...5
+## * ... and 29 more problems</code></pre>
+<p>This data is messy. Let’s make it tidy! (well, kind of. The some of the rows will be means rather than observations….so maybe it won’t be totally tidy). I’m not going to even try to work within these dataframes because they’re just that messy. Let’s start by making a new dataframe!</p>
 
 
 

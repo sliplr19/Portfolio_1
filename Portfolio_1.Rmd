@@ -5,11 +5,19 @@ date: "2/12/2021"
 output: html_document
 ---
 
-In this portfolio piece, we will look at how people's relationship to cooking and baking has changed pre- and during Covid. Let's load some data!
+In this portfolio piece, we will look at how people's relationship to cooking and baking has changed pre- and during Covid. There are four spreadsheets in this file. The first is interest in the activity as determined by google trends. The final three are number of mentions of the activities on Twitter, Forums, and Blogs. Let's load some data! 
 
 ```{r setup, warning = FALSE}
 library(readxl)
-Cooking <- read_excel("G:/My Drive/DataScience/Covid/Cooking.xlsx")
+Cooking_Interest_raw <- read_excel("G:/My Drive/DataScience/Covid/Cooking.xlsx", sheet = 1)
+Cooking_Twitter_raw <- read_excel("G:/My Drive/DataScience/Covid/Cooking.xlsx", sheet = 2)
+Cooking_Forums_raw <- read_excel("G:/My Drive/DataScience/Covid/Cooking.xlsx", sheet = 3)
+Cooking_Blogs_raw <- read_excel("G:/My Drive/DataScience/Covid/Cooking.xlsx", sheet = 4)
 ```
 
-This data is messy. Let's make it tidy! (well, kind of. The rows will be means rather than observations....so maybe it won't be totally tidy)
+This data is messy. Let's make it tidy! (well, kind of. The some of the rows will be means rather than observations....so maybe it won't be totally tidy). I'm not going to even try to work within these dataframes because they're just that messy. Let's start by making a new dataframe! 
+
+```{r create_dataframe}
+
+
+```
