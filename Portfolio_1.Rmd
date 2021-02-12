@@ -1,0 +1,15 @@
+---
+title: "Portfolio_1"
+author: "Lindley Slipetz"
+date: "2/12/2021"
+output: html_document
+---
+
+In this portfolio piece, we will look at how people's relationship to cooking and baking has changed pre- and during Covid. Let's load some data!
+
+```{r setup, warning = FALSE}
+library(readxl)
+Cooking <- read_excel("G:/My Drive/DataScience/Covid/Cooking.xlsx")
+```
+
+This data is messy. Let's make it tidy! (well, kind of. The rows will be means rather than observations....so maybe it won't be totally tidy)
