@@ -104,4 +104,18 @@ Okay, now we can look at the means.
 cooking_mean <- setDT(cooking_data) 
 cooking_mean[, .(Recipes = mean(Recipes), Baking_Bread = mean(Baking_Bread), Sourdough = mean(Sourdough), Cooking_directions = mean(Cooking_directions), Cook = mean(Cook)), by = .(Timepoint)]
 ```
-Notice that the means across venues increase across time. Let's look at the change in means for each particular venue. 
+Notice that the means across venues increase across time, but we don't know if that change is statistically significant. Let's do some paired sample t-tests. We're testing the hypothesis that time 1 mentions (pre-Covid) are significantly less than time 2 mentions (during-Covid).
+
+```{r ttest}
+t_Recipe <- t.test(Recipes ~ Timepoint, data = cooking_data, paired = TRUE, alternative = "less")
+t_Recipe
+t_Bread <- t.test(Baking_Bread ~ Timepoint, data = cooking_data, paired = TRUE, alternative = "less")
+t_Bread
+t_Sourdough <- t.test(Sourdough ~ Timepoint, data = cooking_data, paired = TRUE, alternative = "less")
+t_Sourdough
+t_Directions <- t.test(Cooking_directions ~ Timepoint, data = cooking_data, paired = TRUE, alternative = "less")
+t_Directions
+t_Cook <- t.test(Cook ~ Timepoint, data = cooking_data, paired = TRUE, alternative = "less")
+t_Cook
+```
+Well, it looks like mentions of cooking-related topics during Covid aren't significantly greater than mentions of cooking-related topics pre-Covid. While the media has reported the trend in cooking during Covid, people don't mention it on Twitter, Blogs, or Forums a statistically greater amount than before.  

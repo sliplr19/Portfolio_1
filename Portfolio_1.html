@@ -494,7 +494,73 @@ cooking_mean[, .(Recipes = mean(Recipes), Baking_Bread = mean(Baking_Bread), Sou
 <pre><code>##    Timepoint  Recipes Baking_Bread Sourdough Cooking_directions     Cook
 ## 1:         1 4108.557     197.4905  388.2714           7.414286 18096.60
 ## 2:         2 8532.081     781.0000 1715.6857          16.909524 24815.22</code></pre>
-<p>Notice that the means across venues increase across time. Let’s look at the change in means for each particular venue.</p>
+<p>Notice that the means across venues increase across time, but we don’t know if that change is statistically significant. Let’s do some paired sample t-tests. We’re testing the hypothesis that time 1 mentions (pre-Covid) are significantly less than time 2 mentions (during-Covid).</p>
+<pre class="r"><code>t_Recipe &lt;- t.test(Recipes ~ Timepoint, data = cooking_data, paired = TRUE, alternative = &quot;less&quot;)
+t_Recipe</code></pre>
+<pre><code>## 
+##  Paired t-test
+## 
+## data:  Recipes by Timepoint
+## t = -1.9876, df = 2, p-value = 0.0926
+## alternative hypothesis: true difference in means is less than 0
+## 95 percent confidence interval:
+##      -Inf 2075.137
+## sample estimates:
+## mean of the differences 
+##               -4423.524</code></pre>
+<pre class="r"><code>t_Bread &lt;- t.test(Baking_Bread ~ Timepoint, data = cooking_data, paired = TRUE, alternative = &quot;less&quot;)
+t_Bread</code></pre>
+<pre><code>## 
+##  Paired t-test
+## 
+## data:  Baking_Bread by Timepoint
+## t = -1.3803, df = 2, p-value = 0.1508
+## alternative hypothesis: true difference in means is less than 0
+## 95 percent confidence interval:
+##      -Inf 650.9208
+## sample estimates:
+## mean of the differences 
+##               -583.5095</code></pre>
+<pre class="r"><code>t_Sourdough &lt;- t.test(Sourdough ~ Timepoint, data = cooking_data, paired = TRUE, alternative = &quot;less&quot;)
+t_Sourdough</code></pre>
+<pre><code>## 
+##  Paired t-test
+## 
+## data:  Sourdough by Timepoint
+## t = -1.7288, df = 2, p-value = 0.113
+## alternative hypothesis: true difference in means is less than 0
+## 95 percent confidence interval:
+##     -Inf 914.564
+## sample estimates:
+## mean of the differences 
+##               -1327.414</code></pre>
+<pre class="r"><code>t_Directions &lt;- t.test(Cooking_directions ~ Timepoint, data = cooking_data, paired = TRUE, alternative = &quot;less&quot;)
+t_Directions</code></pre>
+<pre><code>## 
+##  Paired t-test
+## 
+## data:  Cooking_directions by Timepoint
+## t = -2.0965, df = 2, p-value = 0.08549
+## alternative hypothesis: true difference in means is less than 0
+## 95 percent confidence interval:
+##      -Inf 3.729383
+## sample estimates:
+## mean of the differences 
+##               -9.495238</code></pre>
+<pre class="r"><code>t_Cook &lt;- t.test(Cook ~ Timepoint, data = cooking_data, paired = TRUE, alternative = &quot;less&quot;)
+t_Cook</code></pre>
+<pre><code>## 
+##  Paired t-test
+## 
+## data:  Cook by Timepoint
+## t = -1.2097, df = 2, p-value = 0.175
+## alternative hypothesis: true difference in means is less than 0
+## 95 percent confidence interval:
+##      -Inf 9499.301
+## sample estimates:
+## mean of the differences 
+##               -6718.619</code></pre>
+<p>Well, it looks like mentions of cooking-related topics during Covid aren’t significantly greater than mentions of cooking-related topics pre-Covid. While the media has reported the trend in cooking during Covid, people don’t mention it on Twitter, Blogs, or Forums a statistically greater amount than before.</p>
 
 
 
