@@ -1,5 +1,5 @@
 ---
-title: "Portfolio_1"
+title: "Portfolio_1: Cooking during Covid"
 author: "Lindley Slipetz"
 date: "2/12/2021"
 output: html_document
@@ -119,3 +119,67 @@ t_Cook <- t.test(Cook ~ Timepoint, data = cooking_data, paired = TRUE, alternati
 t_Cook
 ```
 Well, it looks like mentions of cooking-related topics during Covid aren't significantly greater than mentions of cooking-related topics pre-Covid. While the media has reported the trend in cooking during Covid, people don't mention it on Twitter, Blogs, or Forums a statistically greater amount than before.  
+
+Oh well, let's do some graphs anyway. I tried to do a facet wrap by column (e.g., "Baking_Bread" and "Cook"), but the scales differ so drastically among the columns that I don't think that's the best way to go about it. Also, there's a lot of info I'm trying to cram into every graph, so it seems best to seperate them.
+
+```{r recipes_graph}
+cooking_data %>% 
+    ggplot(aes(x = Timepoint,y = Recipes, fill = Venue)) + 
+    geom_bar(stat = "identity",position = "dodge") + 
+    scale_fill_grey() + theme_classic() +
+    scale_x_discrete("Before or during Covid", labels = c("Before March 13th, 2020", "After March 13th, 2020"), limits = c(1, 2)) + 
+    labs(title = "Mentions of recipes by venue before and during Covid",
+         y = "Mentions of recipes")
+ 
+```
+
+We can see with the recipe data that Blog mentions barely increased but Twitter mentions approximately doubled. Now let's look at Baking Bread!
+
+```{r bread_graph}
+cooking_data %>% 
+    ggplot(aes(x = Timepoint,y = Baking_Bread, fill = Venue)) + 
+    geom_bar(stat = "identity",position = "dodge") + 
+    scale_fill_grey() + theme_classic() +
+    scale_x_discrete("Before or during Covid", labels = c("Before March 13th, 2020", "After March 13th, 2020"), limits = c(1, 2)) + 
+    labs(title = "Mentions of baking bread by venue before and during Covid",
+         y = "Mentions of baking bread")
+ 
+```
+With the baking bread data, again we see a huge leap in Twitter mentions. It's making me think we should look more at the Twitter data...but let's keep going with our graphs.
+
+```{r sourdough_graph}
+cooking_data %>% 
+    ggplot(aes(x = Timepoint,y = Sourdough, fill = Venue)) + 
+    geom_bar(stat = "identity",position = "dodge") + 
+    scale_fill_grey() + theme_classic() +
+    scale_x_discrete("Before or during Covid", labels = c("Before March 13th, 2020", "After March 13th, 2020"), limits = c(1, 2)) + 
+    labs(title = "Mentions of sourdough by venue before and during Covid",
+         y = "Mentions of sourdough")
+ 
+```
+Sourdough also shows a huge difference in mentions like the previous data. This is lending more evidence that there might be something going on with the Twitter data.
+
+```{r directions_graph}
+cooking_data %>% 
+    ggplot(aes(x = Timepoint,y = Cooking_directions, fill = Venue)) + 
+    geom_bar(stat = "identity",position = "dodge") + 
+    scale_fill_grey() + theme_classic() +
+    scale_x_discrete("Before or during Covid", labels = c("Before March 13th, 2020", "After March 13th, 2020"), limits = c(1, 2)) + 
+    labs(title = "Mentions of cooking directions by venue before and during Covid",
+         y = "Mentions of cooking directions")
+ 
+```
+There's a difference for the Twitter data again for cooking directions, but notice the difference in the scale between this data and the previous graphs. Does this smaller difference help support a statistically significant difference pre- and during Covid?
+
+```{r cook_graph}
+cooking_data %>% 
+    ggplot(aes(x = Timepoint,y = Cook, fill = Venue)) + 
+    geom_bar(stat = "identity",position = "dodge") + 
+    scale_fill_grey() + theme_classic() +
+    scale_x_discrete("Before or during Covid", labels = c("Before March 13th, 2020", "After March 13th, 2020"), limits = c(1, 2)) + 
+    labs(title = "Mentions of 'cook' by venue before and during Covid",
+         y = "Mentions of 'cook")
+ 
+```
+
+The graph shows us that there was, again, a large leap in mentions of 'cook.' I think we should revisit the t-test, this time limiting to just twitter and see if there's a significant difference.
