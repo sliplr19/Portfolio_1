@@ -7,7 +7,7 @@ output: html_document
 
 In this portfolio piece, we will look at how people's relationship to cooking and baking has changed pre- and during Covid. There are four spreadsheets in this file. I'm leaving off the first sheet because it uses a different scale than the other sheets. Also, there is no documentation for this data, and it's not exactly clear how the first sheet is measuring google trends. The final three are number of mentions of the activities on Twitter, Forums, and Blogs. Let's load some data! 
 
-```{r setup, warning = FALSE}
+```{r setup, warning = FALSE, message = FALSE}
 library(readxl)
 Cooking_Twitter_raw <- read_excel("G:/My Drive/DataScience/Covid/Cooking.xlsx", sheet = 2)
 Cooking_Forums_raw <- read_excel("G:/My Drive/DataScience/Covid/Cooking.xlsx", sheet = 3)
@@ -24,7 +24,7 @@ cooking_data <- as.data.frame(matrix(ncol = length(cooking_columns), nrow=0, dim
 ```
 
 Okay, time to add the data to the new dataframe. 
-df$major[df$degree1 == "BA"]
+
 ```{r add_data}
 ##Blog time 1
 cooking_data <-rbind(cooking_data, data.frame(
@@ -145,6 +145,7 @@ cooking_data %>%
          y = "Mentions of baking bread")
  
 ```
+
 With the baking bread data, again we see a huge leap in Twitter mentions. It's making me think we should look more at the Twitter data...but let's keep going with our graphs.
 
 ```{r sourdough_graph}
@@ -157,6 +158,7 @@ cooking_data %>%
          y = "Mentions of sourdough")
  
 ```
+
 Sourdough also shows a huge difference in mentions like the previous data. This is lending more evidence that there might be something going on with the Twitter data.
 
 ```{r directions_graph}
@@ -169,6 +171,7 @@ cooking_data %>%
          y = "Mentions of cooking directions")
  
 ```
+
 There's a difference for the Twitter data again for cooking directions, but notice the difference in the scale between this data and the previous graphs. Does this smaller difference help support a statistically significant difference pre- and during Covid?
 
 ```{r cook_graph}
@@ -182,4 +185,19 @@ cooking_data %>%
  
 ```
 
+
 The graph shows us that there was, again, a large leap in mentions of 'cook.' I think we should revisit the t-test, this time limiting to just twitter and see if there's a significant difference.
+
+```{r ttwitter}
+Twitter <- cooking_data %>%
+  filter(Venue == "Twitter") %>%
+  gather(Type, value, Recipes, Baking_Bread, Sourdough, Cooking_directions,    
+  Cook, na.rm = FALSE, convert = FALSE) 
+t_Twitter <- t.test(value ~ Timepoint, data = Twitter, paired = TRUE, alternative = "less")
+t_Twitter
+
+```
+
+Well, it wasn't significant, but it was close. So what have we found...
+
+The media has reported that there has been an increase in interest in cooking/baking activities since Covid started. We looked at if there were a significant increase in mentions across platforms (Twitter, Blog, Forum). Although the graphs show there are differences, t-tests demonstrated that the differences are not significant. 
