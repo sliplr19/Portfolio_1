@@ -395,6 +395,24 @@ Cooking_Twitter_raw &lt;- read_excel(&quot;G:/My Drive/DataScience/Covid/Cooking
 ## * `Mentions after March 13 (March 14, 2020-May 22, 2020)` -&gt; `Mentions after March 13 (March 14, 2020-May 22, 2020)...4`
 ## * `` -&gt; ...5
 ## * ... and 29 more problems</code></pre>
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>## -- Attaching packages --------------------------------------- tidyverse 1.2.1 --</code></pre>
+<pre><code>## v ggplot2 3.3.0     v purrr   0.3.2
+## v tibble  2.1.3     v dplyr   0.8.5
+## v tidyr   1.0.2     v stringr 1.4.0
+## v readr   1.3.1     v forcats 0.4.0</code></pre>
+<pre><code>## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>library(data.table)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;data.table&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:dplyr&#39;:
+## 
+##     between, first, last</code></pre>
+<pre><code>## The following object is masked from &#39;package:purrr&#39;:
+## 
+##     transpose</code></pre>
 <p>This data is messy. Let’s make it tidy! I’m not going to even try to work within these dataframes because they’re just that messy. Let’s start by making a new dataframe! We’ll just get the columns together first and then we’ll add the data.</p>
 <pre class="r"><code>cooking_columns &lt;- c(&quot;Venue&quot;, &quot;Timepoint&quot;, &quot;Recipes&quot;, &quot;Baking_Bread&quot;, &quot;Sourdough&quot;, &quot;Cooking_directions&quot;, &quot;Cook&quot;)
 cooking_data &lt;- as.data.frame(matrix(ncol = length(cooking_columns), nrow=0, dimnames = list(NULL,cooking_columns)) )</code></pre>
@@ -453,6 +471,30 @@ cooking_data &lt;-rbind(cooking_data, data.frame(
    Sourdough = Cooking_Forums_raw$`Mentions after March 13 (March 14, 2020-May 22, 2020)...10`[Cooking_Forums_raw$...7 == &quot;Sourdough&quot; &amp; is.na(Cooking_Forums_raw$...7) == FALSE],
    Cooking_directions = Cooking_Forums_raw$`Mentions after March 13 (March 14, 2020-May 22, 2020)...10`[Cooking_Forums_raw$...7 == &quot;Cooking Directions&quot; &amp; is.na(Cooking_Forums_raw$...7) == FALSE],
    Cook = Cooking_Forums_raw$`Mentions after March 13 (March 14, 2020-May 22, 2020)...10`[Cooking_Forums_raw$...7 == &quot;Cook&quot; &amp; is.na(Cooking_Forums_raw$...7) == FALSE]))</code></pre>
+<p>Phew, now we have a tidy dataframe. Let’s take a look at it.</p>
+<pre class="r"><code>glimpse(cooking_data)</code></pre>
+<pre><code>## Observations: 6
+## Variables: 7
+## $ Venue              &lt;fct&gt; Blog, Blog, Twitter, Twitter, Forums, Forums
+## $ Timepoint          &lt;dbl&gt; 1, 2, 1, 2, 1, 2
+## $ Recipes            &lt;fct&gt; 2291.2571428571428, 2862.7, 7332.9857142857145, ...
+## $ Baking_Bread       &lt;fct&gt; 81.242857142857147, 224.58571428571429, 403.3, 1...
+## $ Sourdough          &lt;fct&gt; 93.142857142857139, 278.37142857142857, 605.2999...
+## $ Cooking_directions &lt;fct&gt; 10.1, 14.5, 7.9571428571428573, 26.4857142857142...
+## $ Cook               &lt;fct&gt; 3211.0571428571429, 4019.1285714285714, 43583.84...</code></pre>
+<p>Well, that didn’t really tell us much. Let’s look at the descriptives grouped by time point. First, our observations are factors at the moment, so let’s fix that.</p>
+<pre class="r"><code>cooking_data$Recipes &lt;- as.numeric(as.character(cooking_data$Recipes))
+cooking_data$Baking_Bread &lt;- as.numeric(as.character(cooking_data$Baking_Bread))
+cooking_data$Sourdough &lt;- as.numeric(as.character(cooking_data$Sourdough))
+cooking_data$Cooking_directions &lt;- as.numeric(as.character(cooking_data$Cooking_directions))
+cooking_data$Cook &lt;- as.numeric(as.character(cooking_data$Cook))</code></pre>
+<p>Okay, now we can look at the means.</p>
+<pre class="r"><code>cooking_mean &lt;- setDT(cooking_data) 
+cooking_mean[, .(Recipes = mean(Recipes), Baking_Bread = mean(Baking_Bread), Sourdough = mean(Sourdough), Cooking_directions = mean(Cooking_directions), Cook = mean(Cook)), by = .(Timepoint)]</code></pre>
+<pre><code>##    Timepoint  Recipes Baking_Bread Sourdough Cooking_directions     Cook
+## 1:         1 4108.557     197.4905  388.2714           7.414286 18096.60
+## 2:         2 8532.081     781.0000 1715.6857          16.909524 24815.22</code></pre>
+<p>Notice that the means across venues increase across time. Let’s look at the change in means for each particular venue.</p>
 
 
 

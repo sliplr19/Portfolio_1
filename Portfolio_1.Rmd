@@ -12,6 +12,8 @@ library(readxl)
 Cooking_Twitter_raw <- read_excel("G:/My Drive/DataScience/Covid/Cooking.xlsx", sheet = 2)
 Cooking_Forums_raw <- read_excel("G:/My Drive/DataScience/Covid/Cooking.xlsx", sheet = 3)
 Cooking_Blogs_raw <- read_excel("G:/My Drive/DataScience/Covid/Cooking.xlsx", sheet = 4)
+library(tidyverse)
+library(data.table)
 ```
 
 This data is messy. Let's make it tidy! I'm not going to even try to work within these dataframes because they're just that messy. Let's start by making a new dataframe! We'll just get the columns together first and then we'll add the data.
@@ -79,3 +81,27 @@ cooking_data <-rbind(cooking_data, data.frame(
    Cooking_directions = Cooking_Forums_raw$`Mentions after March 13 (March 14, 2020-May 22, 2020)...10`[Cooking_Forums_raw$...7 == "Cooking Directions" & is.na(Cooking_Forums_raw$...7) == FALSE],
    Cook = Cooking_Forums_raw$`Mentions after March 13 (March 14, 2020-May 22, 2020)...10`[Cooking_Forums_raw$...7 == "Cook" & is.na(Cooking_Forums_raw$...7) == FALSE]))
 ```
+
+Phew, now we have a tidy dataframe. Let's take a look at it.
+
+```{r inspect_df}
+glimpse(cooking_data)
+```
+
+Well, that didn't really tell us much. Let's look at the descriptives grouped by time point. First, our observations are factors at the moment, so let's fix that.
+
+```{r not_factors}
+cooking_data$Recipes <- as.numeric(as.character(cooking_data$Recipes))
+cooking_data$Baking_Bread <- as.numeric(as.character(cooking_data$Baking_Bread))
+cooking_data$Sourdough <- as.numeric(as.character(cooking_data$Sourdough))
+cooking_data$Cooking_directions <- as.numeric(as.character(cooking_data$Cooking_directions))
+cooking_data$Cook <- as.numeric(as.character(cooking_data$Cook))
+```
+
+Okay, now we can look at the means.
+
+```{r descriptives}
+cooking_mean <- setDT(cooking_data) 
+cooking_mean[, .(Recipes = mean(Recipes), Baking_Bread = mean(Baking_Bread), Sourdough = mean(Sourdough), Cooking_directions = mean(Cooking_directions), Cook = mean(Cook)), by = .(Timepoint)]
+```
+Notice that the means across venues increase across time. Let's look at the change in means for each particular venue. 
